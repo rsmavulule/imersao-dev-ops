@@ -1,0 +1,32 @@
+# Especifica a versão do formato do arquivo docker-compose.
+# A versão '3.8' é uma versão moderna e estável que suporta todas as funcionalidades que usaremos.
+version: '3.8'
+
+# A seção 'services' é onde definimos os diferentes contêineres que compõem nossa aplicação.
+# Cada chave sob 'services' é o nome de um serviço (por exemplo, 'api', 'db', 'frontend').
+services:
+  # 'api' é o nome que damos ao nosso serviço da aplicação FastAPI.
+  api:
+    # 'build: .' instrui o Docker Compose a construir uma imagem Docker para este serviço.
+    # O '.' indica que o Dockerfile está localizado no diretório atual (a raiz do projeto).
+    build: .
+    # 'container_name' define um nome fixo e legível para o contêiner quando ele for executado.
+    # Isso facilita a identificação e o gerenciamento do contêiner (ex: 'docker logs imersao_devops_api').
+    container_name: escola_backend
+    # 'command' sobrescreve o comando padrão (CMD) definido no Dockerfile.
+    # Aqui, iniciamos o servidor Uvicorn, fazendo-o escutar em todas as interfaces de rede ('0.0.0.0'),
+    # na porta 8000, e com a flag '--reload', que reinicia o servidor automaticamente
+    # sempre que detecta uma alteração nos arquivos de código, ideal para desenvolvimento.
+    # command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    # 'volumes' monta um diretório do seu computador (host) para dentro do contêiner.
+    # '- .:/app' mapeia o diretório atual ('.') do seu projeto para o diretório '/app' dentro do contêiner.
+    # Isso é essencial para o '--reload' funcionar e para que o banco de dados 'escola.db' seja salvo no seu computador.
+    volumes:
+      - .:/app
+    # 'ports' mapeia uma porta do seu computador (host) para uma porta do contêiner.
+    # '- "8000:8000"' expõe a porta 8000 do contêiner na porta 8000 do seu computador,
+    # permitindo que você acesse a API em http://localhost:8000.
+    ports:
+      - "8000:8000"
+ 
+
